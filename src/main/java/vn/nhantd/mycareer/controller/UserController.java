@@ -1,5 +1,7 @@
 package vn.nhantd.mycareer.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import vn.nhantd.mycareer.model.user.User;
@@ -17,6 +19,8 @@ import java.util.List;
 public class UserController {
 
     private final UserRepository userRepository;
+    @Autowired
+    MongoTemplate mongoTemplate;
 
     public UserController(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -43,8 +47,14 @@ public class UserController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public void modifyUserById(@PathVariable("id") ObjectId id, @Valid @RequestBody User user) {
-        user.set_id(id);
-        userRepository.save(user);
+//        user.set_id(id);
+        try {
+            userRepository.delete(userRepository.findByUid(user.getUid()));
+            userRepository.save(user);
+        } catch (Exception e) {
+            userRepository.save(user);
+        }
+
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
