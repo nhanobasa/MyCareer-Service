@@ -7,7 +7,5 @@ import vn.nhantd.mycareer.model.user.WorkProgress;
 
 import java.util.List;
 
-public interface WPRepository extends MongoRepository<WorkProgress, ObjectId> {
-
-    List<WorkProgress> findAllQuery(Query query);
+public interface WPRepository extends MongoRepository<WorkProgress, String> {
 }

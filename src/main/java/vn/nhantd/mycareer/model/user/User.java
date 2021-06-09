@@ -1,17 +1,14 @@
 package vn.nhantd.mycareer.model.user;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "User")
 public class User {
 
     @Id
-    private ObjectId _id = null;
+    private String _id = null;
     private String _partition = null;
     private String address = null;
     private User_career_goals career_goals = null;
@@ -25,15 +22,18 @@ public class User {
     private String photoUrl = null;
     private User_references references = null;
     private String sex = null;
+
+    @Indexed(unique = true)
     private String uid = null;
+
     private String username = null;
 
     // Standard getters & setters
-    public ObjectId get_id() {
+    public String getId() {
         return _id;
     }
 
-    public void set_id(ObjectId _id) {
+    public void setId(String _id) {
         this._id = _id;
     }
 

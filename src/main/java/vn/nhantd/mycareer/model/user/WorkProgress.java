@@ -7,7 +7,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "WorkProgress")
 public class WorkProgress {
     @Id
-    private ObjectId _id;
+    private String _id;
+
     private String _partition;
     private String company_name;
     private String description;
@@ -17,11 +18,11 @@ public class WorkProgress {
     private String user_id;
 
     // Standard getters & setters
-    public ObjectId get_id() {
+    public String get_id() {
         return _id;
     }
 
-    public void set_id(ObjectId _id) {
+    public void set_id(String _id) {
         this._id = _id;
     }
 

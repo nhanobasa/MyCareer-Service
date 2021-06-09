@@ -13,6 +13,7 @@ import vn.nhantd.mycareer.repository.WPRepository;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/mycareer/api/v1/user")
@@ -33,23 +34,23 @@ public class UserController {
         return userRepository.findAll();
     }
 
-    @RequestMapping(value = "/profile", method = RequestMethod.POST)
-    public User getUserById(@Valid @RequestBody User u) {
-        User user = null;
-        if (u.get_id() != null)
-//            user = userRepository.findBy_id(u.get_id());
-            user = userRepository.findByUid(u.getUid());
+    @RequestMapping(value = "/profile", method = RequestMethod.GET)
+    public User getUserById(@Valid @RequestParam String u) {
+        Optional<User> user = null;
+        if (u != null)
+            user = userRepository.findById(u);
+//            user = userRepository.findByUid(u.getUid());
         else
-            user = userRepository.findByUid(u.getUid());
+            user = userRepository.findById(u);
 
-        return user;
+        return user.get();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public void modifyUserById(@PathVariable("id") ObjectId id, @Valid @RequestBody User user) {
 //        user.set_id(id);
         try {
-            userRepository.delete(userRepository.findByUid(user.getUid()));
+            userRepository.delete(userRepository.findById(user.getId()).get());
             userRepository.save(user);
         } catch (Exception e) {
             userRepository.save(user);
@@ -59,7 +60,7 @@ public class UserController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public User createUser(@Valid @RequestBody User user) {
-        User checkUser = userRepository.findByUid(user.getUid());
+        User checkUser = userRepository.findById(user.getId()).get();
         if (checkUser == null) {
             userRepository.save(user);
         }
@@ -67,8 +68,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public void deleteUser(@PathVariable ObjectId id) {
-        userRepository.delete(userRepository.findBy_id(id));
+    public void deleteUser(@PathVariable String id) {
+        userRepository.delete(userRepository.findById(id).get());
     }
 
 
