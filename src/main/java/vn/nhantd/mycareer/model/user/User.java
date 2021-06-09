@@ -1,13 +1,16 @@
 package vn.nhantd.mycareer.model.user;
 
+import com.google.gson.annotations.SerializedName;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection = "User")
 public class User {
 
     @Id
+    @Field("_id")
     private String _id = null;
     private String _partition = null;
     private String address = null;
@@ -23,7 +26,6 @@ public class User {
     private User_references references = null;
     private String sex = null;
 
-    @Indexed(unique = true)
     private String uid = null;
 
     private String username = null;
@@ -33,8 +35,8 @@ public class User {
         return _id;
     }
 
-    public void setId(String _id) {
-        this._id = _id;
+    public void setId(String id) {
+        this._id = id;
     }
 
     public String get_partition() {

@@ -1,12 +1,16 @@
 package vn.nhantd.mycareer.model.user;
 
+import com.google.gson.annotations.SerializedName;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection = "WorkProgress")
 public class WorkProgress {
     @Id
+    @Field("_id")
+
     private String _id;
 
     private String _partition;
@@ -22,8 +26,8 @@ public class WorkProgress {
         return _id;
     }
 
-    public void set_id(String _id) {
-        this._id = _id;
+    public void set_id(String id) {
+        this._id = id;
     }
 
     public String get_partition() {

@@ -35,35 +35,39 @@ public class UserController {
     }
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
-    public User getUserById(@Valid @RequestParam String u) {
+    public User getUserById(@Valid @RequestParam String id) {
         Optional<User> user = null;
-        if (u != null)
-            user = userRepository.findById(u);
-//            user = userRepository.findByUid(u.getUid());
-        else
-            user = userRepository.findById(u);
-
-        return user.get();
+        user = userRepository.findById(id);
+        if (user.isPresent()) {
+            return user.get();
+        }
+        return null;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public void modifyUserById(@PathVariable("id") ObjectId id, @Valid @RequestBody User user) {
 //        user.set_id(id);
         try {
-            userRepository.delete(userRepository.findById(user.getId()).get());
+//            userRepository.delete(userRepository.findById(user.getId()).get());
             userRepository.save(user);
         } catch (Exception e) {
-            userRepository.save(user);
+            e.printStackTrace();
         }
 
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public User createUser(@Valid @RequestBody User user) {
-        User checkUser = userRepository.findById(user.getId()).get();
-        if (checkUser == null) {
-            userRepository.save(user);
+        try {
+            Optional<User> checkUser = userRepository.findById(user.getId());
+            if (!checkUser.isPresent()) {
+                userRepository.save(user);
+                return user;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
         return null;
     }
 

@@ -23,7 +23,6 @@ public class WorkProgressController {
     @Autowired
     MongoTemplate mongoTemplate;
 
-
     @RequestMapping(value = "", method = RequestMethod.GET)
     public List<WorkProgress> getWorkProgressOfUser(
             @RequestParam(required = false, name = "user_id") String user_id) {
