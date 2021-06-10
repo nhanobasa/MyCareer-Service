@@ -8,12 +8,12 @@ public class User_experience {
     private String current_level;
     private Integer total_years;
 
-    private List<ObjectId> work_progress;
+    private List<String> work_progress;
     // Standard getters & setters
     public String getCurrent_level() { return current_level; }
     public void setCurrent_level(String current_level) { this.current_level = current_level; }
     public Integer getTotal_years() { return total_years; }
     public void setTotal_years(Integer total_years) { this.total_years = total_years; }
-    public List<ObjectId> getWork_progress() { return work_progress; }
-    public void setWork_progress(List<ObjectId> work_progress) { this.work_progress = work_progress; }
+    public List<String> getWork_progress() { return work_progress; }
+    public void setWork_progress(List<String> work_progress) { this.work_progress = work_progress; }
 }

@@ -44,16 +44,15 @@ public class UserController {
         return null;
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public void modifyUserById(@PathVariable("id") ObjectId id, @Valid @RequestBody User user) {
-//        user.set_id(id);
+    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
+    public String modifyUserById(@PathVariable("id") String id, @Valid @RequestBody User user) {
         try {
-//            userRepository.delete(userRepository.findById(user.getId()).get());
             userRepository.save(user);
+            return "OK";
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        return null;
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
