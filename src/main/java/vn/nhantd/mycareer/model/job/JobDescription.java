@@ -6,7 +6,7 @@ public class JobDescription {
     private String requirements = "";
 
     // thông tin khác
-    private String type = "";
+    private String type = ""; // FULLTIME- PARTTIME - FREELANCER
     private String sex = "";
     private String age = "";
     private String degree = "";

@@ -12,7 +12,7 @@ public class Employer {
     @Id
     @Field("_id")
     private String _id = null;
-    private String _partition = null;
+    private String _partition = "sync";
     private Long dt;
     private String name = null;
     private String address = null;
