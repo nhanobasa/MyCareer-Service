@@ -29,4 +29,11 @@ public class Salary {
     public void setTo_salary(Double to_salary) {
         this.to_salary = to_salary;
     }
+
+    @Override
+    public String toString() {
+        if (currency_unit.equals("Thỏa thuận"))
+            return currency_unit;
+        return from_salary + " - " + to_salary + " " + currency_unit;
+    }
 }

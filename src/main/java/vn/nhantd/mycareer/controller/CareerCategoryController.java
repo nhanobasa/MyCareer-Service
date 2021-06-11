@@ -1,11 +1,12 @@
 package vn.nhantd.mycareer.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.web.bind.annotation.*;
 import vn.nhantd.mycareer.model.job.CareerCategory;
-import vn.nhantd.mycareer.model.job.Job;
 import vn.nhantd.mycareer.repository.CareerCategoryRepository;
-import vn.nhantd.mycareer.repository.EmployerRepository;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -17,6 +18,8 @@ public class CareerCategoryController {
 
     @Autowired
     CareerCategoryRepository categoryRepository;
+    @Autowired
+    MongoTemplate mongoTemplate;
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public CareerCategory createCareerCategory(@Valid @RequestBody CareerCategory job) {
@@ -41,6 +44,17 @@ public class CareerCategoryController {
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public List<CareerCategory> getAllCategory() {
         return categoryRepository.findAll();
+    }
+
+    @RequestMapping(value = "/top", method = RequestMethod.GET)
+    public List<CareerCategory> getTopCategory() {
+        Sort sortJob = new Sort(Sort.Direction.DESC, "total_job");
+        Sort sortUser = new Sort(Sort.Direction.DESC, "total_user");
+        Query query = new Query();
+        query = query.with(sortJob).with(sortUser);
+        
+        List<CareerCategory> list = mongoTemplate.find(query, CareerCategory.class);
+        return list;
     }
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)

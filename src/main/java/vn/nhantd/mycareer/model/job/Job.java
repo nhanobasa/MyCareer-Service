@@ -14,12 +14,15 @@ public class Job {
     @Field("_id")
     private String _id = null;
     private String _partition = "sync";
+    private String employer_id = null;
     private Long dt = System.currentTimeMillis();
     private String name = null;
     private String address = null;
     private String position = null;
+    private String level = null;
     private String category = null;
     private Salary salary = null;
+    private String photoUrl = null;
     private JobDescription description = null;
     private String status = null;
     private List<Transaction> transactions = null;
@@ -112,4 +115,27 @@ public class Job {
         this.transactions = transactions;
     }
 
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+
+    public String getEmployer_id() {
+        return employer_id;
+    }
+
+    public void setEmployer_id(String employer_id) {
+        this.employer_id = employer_id;
+    }
 }

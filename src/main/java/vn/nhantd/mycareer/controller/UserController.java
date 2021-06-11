@@ -2,14 +2,10 @@ package vn.nhantd.mycareer.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import vn.nhantd.mycareer.model.user.User;
-import vn.nhantd.mycareer.model.user.WorkProgress;
 import vn.nhantd.mycareer.repository.UserRepository;
-import org.bson.types.ObjectId;
 import org.springframework.web.bind.annotation.*;
-import vn.nhantd.mycareer.repository.WPRepository;
+import vn.nhantd.mycareer.service.UserService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -22,6 +18,9 @@ public class UserController {
     private final UserRepository userRepository;
     @Autowired
     MongoTemplate mongoTemplate;
+
+    @Autowired
+    UserService userService;
 
     public UserController(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -36,12 +35,9 @@ public class UserController {
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public User getUserById(@Valid @RequestParam String id) {
-        Optional<User> user = null;
-        user = userRepository.findById(id);
-        if (user.isPresent()) {
-            return user.get();
-        }
-        return null;
+        User user = userService.getUserById(id);
+
+        return user;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
