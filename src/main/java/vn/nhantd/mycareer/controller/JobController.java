@@ -76,16 +76,8 @@ public class JobController {
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public List<Job> getAllJobs(@RequestParam(value = "limit", defaultValue = "-1") int limit) {
-        Sort sortNew = new Sort(Sort.Direction.DESC, "dt");
-        Query query = new Query();
-        if (limit != -1) {
-            query = query.with(sortNew).limit(limit);
-        } else {
-            query = query.with(sortNew);
-        }
-        query = query.addCriteria(Criteria.where("status").is("active"));
-
-        return mongoTemplate.find(query, Job.class);
+        List<Job> list = jobService.getAllJobs(limit);
+        return list;
     }
 
     @RequestMapping(value = "/all/{user_id}", method = RequestMethod.GET)
@@ -93,7 +85,9 @@ public class JobController {
                                    @PathVariable(value = "user_id") String _id) { // _id of user
 
         List<Job> list = jobService.getJobForUser(_id, limit);
-
+        if (list.isEmpty()) {
+            list = jobService.getAllJobs(limit);
+        }
         return list;
     }
 

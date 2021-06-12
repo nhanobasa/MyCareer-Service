@@ -71,4 +71,18 @@ public class JobServiceImpl implements JobService {
 
         return mongoTemplate.find(query, Job.class);
     }
+
+    @Override
+    public List<Job> getAllJobs(int limit) {
+        Sort sortNew = new Sort(Sort.Direction.DESC, "dt");
+        Query query = new Query();
+        if (limit != -1) {
+            query = query.with(sortNew).limit(limit);
+        } else {
+            query = query.with(sortNew);
+        }
+        query = query.addCriteria(Criteria.where("status").is("active"));
+
+        return mongoTemplate.find(query, Job.class);
+    }
 }

@@ -8,4 +8,6 @@ public interface JobService {
     List<Job> getJobForUser(String _id, int limit);
 
     List<Job> getJobOfEmployer(String employer_id, String status, int limit);
+
+    List<Job> getAllJobs(int limit);
 }
