@@ -48,4 +48,27 @@ public class JobServiceImpl implements JobService {
 
         return mongoTemplate.find(query, Job.class);
     }
+
+    @Override
+    public List<Job> getJobOfEmployer(String employer_id, String status, int limit) {
+        Sort sortNew = new Sort(Sort.Direction.DESC, "dt");
+        Query query = new Query();
+        if (limit != -1) {
+            query = query.with(sortNew).limit(limit);
+        } else {
+            query = query.with(sortNew);
+        }
+
+        // Lấy các bản ghi có employer_id thỏa mãn
+        query = query.addCriteria(Criteria
+                .where("employer_id").is(employer_id)
+        );
+
+        // Kiểm tra xem có lọc theo job status hay ko?
+        if (!status.equals("")) {
+            query = query.addCriteria(Criteria.where("status").is(status));
+        }
+
+        return mongoTemplate.find(query, Job.class);
+    }
 }

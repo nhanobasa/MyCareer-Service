@@ -1,12 +1,13 @@
 package vn.nhantd.mycareer.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Transaction {
     private Long dt = System.currentTimeMillis();
     private String transaction_code; // view - like- unlike
     private String user_id;
-    private List<String> cv_path;
+    private List<String> cv_path = new ArrayList<>();
 
     public Transaction() {
     }

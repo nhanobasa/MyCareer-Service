@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import vn.nhantd.mycareer.model.Transaction;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Document(collection = "Employer")
@@ -20,8 +21,8 @@ public class Employer {
     private String description = null;
     private String status = null;
     private String photoUrl = null;
-    private List<Transaction> transactions = null;
-    private List<String> jobs = null;
+    private List<Transaction> transactions = new ArrayList<>();
+    private List<String> jobs = new ArrayList<>();
 
     public Employer() {
     }
