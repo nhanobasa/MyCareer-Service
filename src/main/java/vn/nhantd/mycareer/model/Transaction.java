@@ -3,10 +3,20 @@ package vn.nhantd.mycareer.model;
 import java.util.List;
 
 public class Transaction {
-    private Long dt;
+    private Long dt = System.currentTimeMillis();
     private String transaction_code; // view - like- unlike
     private String user_id;
     private List<String> cv_path;
+
+    public Transaction() {
+    }
+
+    public Transaction(Long dt, String transaction_code, String user_id, List<String> cv_path) {
+        this.dt = dt;
+        this.transaction_code = transaction_code;
+        this.user_id = user_id;
+        this.cv_path = cv_path;
+    }
 
     public Long getDt() {
         return dt;

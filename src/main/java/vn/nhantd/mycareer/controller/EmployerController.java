@@ -60,7 +60,7 @@ public class EmployerController {
     }
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
-    public Employer getEmployerById(@Valid @RequestParam String id) {
+    public Employer getEmployerById(@RequestParam String id) {
         Optional<Employer> employer = null;
         employer = employerRepository.findById(id);
         if (employer.isPresent()) {

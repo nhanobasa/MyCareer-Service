@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import vn.nhantd.mycareer.model.Transaction;
 import vn.nhantd.mycareer.model.user.Salary;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Document(collection = "Job")
@@ -25,7 +26,7 @@ public class Job {
     private String photoUrl = null;
     private JobDescription description = null;
     private String status = null;
-    private List<Transaction> transactions = null;
+    private List<Transaction> transactions = new ArrayList<>();
 
     public String get_id() {
         return _id;
