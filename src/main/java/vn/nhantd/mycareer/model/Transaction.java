@@ -8,6 +8,7 @@ public class Transaction {
     private String transaction_code; // view - like- unlike
     private String user_id;
     private List<String> cv_path = new ArrayList<>();
+    private Boolean viewed = false;
 
     public Transaction() {
     }
@@ -49,5 +50,13 @@ public class Transaction {
 
     public void setCv_path(List<String> cv_path) {
         this.cv_path = cv_path;
+    }
+
+    public Boolean getViewed() {
+        return viewed;
+    }
+
+    public void setViewed(Boolean viewed) {
+        this.viewed = viewed;
     }
 }
