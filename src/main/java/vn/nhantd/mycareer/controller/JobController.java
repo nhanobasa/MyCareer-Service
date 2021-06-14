@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.web.bind.annotation.*;
 import vn.nhantd.mycareer.model.Transaction;
+import vn.nhantd.mycareer.model.ViewCV;
 import vn.nhantd.mycareer.model.job.Job;
 import vn.nhantd.mycareer.model.user.User;
 import vn.nhantd.mycareer.model.user.User_career_goals;
@@ -116,4 +117,13 @@ public class JobController {
         return "";
 
     }
+
+    @RequestMapping(value = "/transaction/view-cv", method = RequestMethod.GET)
+    public ViewCV viewCV(@Valid @RequestParam(value = "job_id") String job_id,
+                         @RequestParam(value = "trans_id") Long trans_id) {
+        ViewCV viewCV = jobService.viewCV(job_id, trans_id);
+        return viewCV;
+    }
+
+
 }

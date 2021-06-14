@@ -1,5 +1,6 @@
 package vn.nhantd.mycareer.service;
 
+import com.google.firebase.messaging.FirebaseMessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -7,15 +8,18 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import vn.nhantd.mycareer.model.Transaction;
+import vn.nhantd.mycareer.model.ViewCV;
 import vn.nhantd.mycareer.model.employeer.Employer;
+import vn.nhantd.mycareer.model.firebase.mesaging.MyCareerNotification;
+import vn.nhantd.mycareer.model.firebase.mesaging.Note;
+import vn.nhantd.mycareer.model.firebase.mesaging.Notification;
 import vn.nhantd.mycareer.model.job.Job;
 import vn.nhantd.mycareer.model.user.User;
 import vn.nhantd.mycareer.model.user.User_career_goals;
 import vn.nhantd.mycareer.repository.JobRepository;
+import vn.nhantd.mycareer.service.firebase.FirebaseMessagingService;
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,6 +32,9 @@ public class JobServiceImpl implements JobService {
 
     @Autowired
     MongoTemplate mongoTemplate;
+
+    @Autowired
+    FirebaseMessagingService messagingService;
 
     @Override
     public List<Job> getJobForUser(String _id, int limit) {
@@ -46,8 +53,8 @@ public class JobServiceImpl implements JobService {
         // Lọc theo tiêu chí tuyển dụng của job
         query = query.addCriteria(Criteria
                         .where("category").is(careerGoals.getCategory())
-                        .and("level").is(careerGoals.getLevel())
-                        .and("address").is(careerGoals.getAddress())
+                        .orOperator(Criteria.where("level").is(careerGoals.getLevel()))
+
 //                .and("salary").regex(".*" + careerGoals.getSalary().toString() + ".*")
         );
 
@@ -127,5 +134,55 @@ public class JobServiceImpl implements JobService {
             }
         }
         return totalLike;
+    }
+
+    @Override
+    public ViewCV viewCV(String job_id, Long trans_id) {
+        ViewCV viewCV = new ViewCV();
+
+        // Tim job theo id
+        Job job = new Job();
+        Optional<Job> jobOptional = null;
+        jobOptional = jobRepository.findById(job_id);
+        if (jobOptional.isPresent()) {
+            job = jobOptional.get();
+        }
+
+        String user_id = "";
+        List<String> cv_path = new ArrayList<>();
+
+        List<Transaction> transactionList = job.getTransactions();
+        for (Transaction transaction : transactionList) {
+            long t_id = transaction.getDt();
+            if (t_id == trans_id) {
+                user_id = transaction.getUser_id();
+                cv_path = transaction.getCv_path();
+
+                // đánh dấu là đã xem.
+                transaction.setViewed(true);
+            }
+        }
+
+        job.setTransactions(transactionList);
+
+        jobRepository.save(job);
+
+        User user = userService.getUserById(user_id);
+        viewCV.setUser(user);
+        viewCV.setCv_path(cv_path);
+
+        // bắn noti
+        String token = user.getFgm_token();
+        String jobName = job.getName();
+        Note note = new Note("MyCareer", "Hồ sơ ứng tuyển " + jobName + "đã được xem bởi nhà tuyển dụng!", null, null);
+
+        try {
+            messagingService.sendNotificationToToken(new MyCareerNotification(token, note));
+            mongoTemplate.save(new Notification(note.getSubject(), note.getContent(), user_id, token));
+        } catch (FirebaseMessagingException e) {
+            e.printStackTrace();
+        }
+
+        return viewCV;
     }
 }

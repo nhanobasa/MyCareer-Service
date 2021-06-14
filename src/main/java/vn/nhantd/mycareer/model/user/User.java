@@ -30,6 +30,17 @@ public class User {
 
     private String username = null;
 
+    private String fgm_token = "";
+
+    public String getFgm_token() {
+        return fgm_token;
+    }
+
+    public void setFgm_token(String fgm_token) {
+        this.fgm_token = fgm_token;
+    }
+
+
     // Standard getters & setters
     public String getId() {
         return _id;
@@ -158,4 +169,6 @@ public class User {
     public void setUsername(String username) {
         this.username = username;
     }
+
+
 }
